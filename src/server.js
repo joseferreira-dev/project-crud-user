@@ -1,7 +1,13 @@
 const express = require('express');
+const path = require('path');
+
+const db = require('./database');
+const routes = require('./routes');
+
 const app = express();
 
-const path = require('path');
+// Add database connection
+db.connect();
 
 // Add static files directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -13,10 +19,8 @@ app.set('view engine', 'ejs');
 // Add URL encoded to server to be able to receive data via POST forms
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.get('/', (req, res) => {
-  res.render('index');
-})
+// Add routes
+app.use('/', routes);
 
 // Start server
 const port = process.env.PORT || 3000;
